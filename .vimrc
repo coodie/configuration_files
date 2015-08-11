@@ -53,10 +53,6 @@ syntax on
 filetype plugin on
 set shell=/bin/bash
 
-" Fast compilation options
-nmap <F9> :SCCompile <Cr> :cope <Cr>
-nmap <F10> :SCCompileRun <Cr>
-
 " Mostly for GVim
 colorscheme molokai
 
@@ -103,6 +99,7 @@ imap <c-s> <Esc>:w<CR>a
 nmap <F9> :w <CR> :SCCompile <CR> :botright cwindow <CR>
 nmap <S-F9> :w <CR> :make! <CR> :botright cwindow <CR>
 nmap <silent><F10> :cclose <CR>
+nmap <silent><F11> :botright copen <CR>
 
 
 " Makes moving around windows easier
