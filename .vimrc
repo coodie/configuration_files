@@ -31,6 +31,7 @@ Plugin 'The-NERD-tree'
 Plugin 'Single-compile'
 Bundle 'octol/vim-cpp-enhanced-highlight' 
 Plugin 'grep.vim'
+Plugin 'indentLine'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -63,6 +64,7 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=0
 set smarttab
+let g:indentLine_char='┆' "Will work only with UTF-8 file encodings
 
 " Wrapping options
 set nowrap
