@@ -1,3 +1,9 @@
+" goovie .vimrc
+" Works with gtk-vim, version at least 7.4 (could be less but not checked) 
+
+
+" ------------------------------- Start of vundle
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -12,43 +18,23 @@ Plugin 'gmarik/Vundle.vim'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
 Plugin 'L9'
 " Plugin 'Valloric/YouCompleteMe'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
 " git repos on your local machine (i.e. when working on your own plugin)
 " Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-" Plugin 'user/L9', {'name': 'newL9'}
 Plugin 'Syntastic'
 Plugin 'vim-hdevtools'
 Plugin 'YouCompleteMe'
 " Plugin 'nerdtree-ack'
 Plugin 'The-NERD-tree'
 Plugin 'Single-compile'
+Bundle 'octol/vim-cpp-enhanced-highlight' 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" ------------------------------- End of vundle
 
-
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-"
 syntax on
 filetype plugin on
 set shell=/bin/bash
@@ -56,8 +42,10 @@ set shell=/bin/bash
 " Mostly for GVim
 colorscheme molokai
 
-" Allows for mouse usage
-set mouse=a
+" Mouse options
+set mouse=a " mouse is usable in every mode
+set mousemodel=popup " gives menu on right click in gvim
+
 " Display line numbers on the left
 set number
 " Display the cursor position on the last line of the screen or in the status
@@ -75,13 +63,27 @@ set shiftwidth=4
 set softtabstop=0
 set smarttab
 
+" Wrapping options
+set nowrap
+
+" Gui options
+set guioptions+=Tb
+
 " Search Options
-set hlsearch 
+set incsearch
+set ignorecase
+set smartcase " If search contains big letter, search gets case sensitive
+set wrapscan " Makes searching cyclic
 
 " Keeps cursor in the middle of the screen
 set scrolloff=3
 
-" Enables to move around files in one project.
+" Coloring Option
+hi ColorColumn guibg=#2d2d2d ctermbg=246
+let &colorcolumn=join(range(81,999),",") " different color from 80 line
+let &colorcolumn="80,".join(range(120,999),",") " 
+
+" Enables to move around buffers in one project.
 nmap <F7> :n <CR> 
 nmap <F8> :prev <CR>
 
@@ -117,14 +119,17 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_write = 1
 let g:syntastic_enable_highlighting = 1
+let g:syntastic_enable_signs = 1
 let g:syntastic_check_on_open = 0
 
 map <silent> <Leader>e :Errors<CR>
 map <Leader>s :SyntasticToggleMode<CR>
 
 " C++ Options
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_option = '-std=c++11 Wall -Wextra -Wpedantic -stdlib=libc++'
+let g:syntastic_cpp_checkers = ['clang_check']
+let g:syntastic_cpp_compiler_option = ' -std=c++11 -Wall -Wextra -Wpedantic -stdlib=libc++'
+let g:syntastic_cpp_check_header = 1
+let g:syntastic_cpp_remove_include_errors = 1
 
 call SingleCompile#SetCompilerTemplate('cpp', 'g++', 'GNU G++ Compiler', 'g++', '$(FILE_NAME)$ -O2 -g --std=c++11 -Wall -Werror -Wpedantic -o $(FILE_TITLE)$', 'l:common_run_command')
 call SingleCompile#SetOutfile('cpp', 'g++', 'l:common_out_file')
@@ -137,7 +142,7 @@ let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_always_populate_location_list = 1 "default 0
 let g:ycm_open_loclist_on_ycm_diags = 1 "default 1
 let g:ycm_complete_in_strings = 1 "default 1
-let g:ycm_collect_identifiers_from_tags_files = 0 "default 0
+let g:ycm_collect_identifiers_from_tags_files = 1 "default 0
 let g:ycm_path_to_python_interpreter = '' "default ''
 let g:ycm_server_use_vim_stdout = 0 "default 0 (logging to console)
 let g:ycm_server_log_level = 'info' "default info
@@ -155,7 +160,6 @@ map <silent> <Leader>t :NERDTreeToggle <CR>
 let g:syntastic_haskell_checkers = ['hdevtools']
 call SingleCompile#ChooseCompiler('haskell', 'ghc')
 "call SingleCompile#ChooseCompiler('haskell', 'ghc', 'Glasgow Haskell
-"Compiler', 'ghc', ')
 
 " vim-hdevtools
 let g:syntastic_haskell_hdevtools_args = '-g-fhelpful-errors'
