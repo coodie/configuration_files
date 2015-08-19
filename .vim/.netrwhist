@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/home/goovie/śmietnik'
+let g:netrw_dirhist_2='/home/goovie/Dokumenty/Programowanie/C++'
+let g:netrw_dirhist_3='/home/goovie/Dokumenty/Programowanie/Haskell/MP_2015_3'
+let g:netrw_dirhist_4='/home/goovie/.cabal'
+let g:netrw_dirhist_5='/home/goovie/.vim/bundle'
+let g:netrw_dirhist_6='/proc/816/cwd'
+let g:netrw_dirhist_7='/etc/wpa_supplicant'
+let g:netrw_dirhist_8='/home/goovie/.vim'
+let g:netrw_dirhist_9='/home/goovie/.ghc/x86_64-linux-7.6.3/package.conf.d'

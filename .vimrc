@@ -7,6 +7,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -20,24 +21,30 @@ Plugin 'gmarik/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 Plugin 'tpope/vim-fugitive'
 Plugin 'L9'
+Plugin 'bling/vim-airline'
 " Plugin 'Valloric/YouCompleteMe'
 " git repos on your local machine (i.e. when working on your own plugin)
 " Plugin 'file:///home/gmarik/path/to/plugin'
 Plugin 'Syntastic'
-Plugin 'vim-hdevtools'
+Plugin 'bitc/vim-hdevtools'
 Plugin 'YouCompleteMe'
+Plugin 'terryma/vim-multiple-cursors'
 " Plugin 'nerdtree-ack'
 Plugin 'The-NERD-tree'
-Plugin 'Single-compile'
+Plugin 'xuhdev/SingleCompile'
 Bundle 'octol/vim-cpp-enhanced-highlight' 
 Plugin 'grep.vim'
-Plugin 'indentLine'
+Plugin 'Yggdroot/indentLine'
+Plugin 'Shougo/vimshell.vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Conque-GDB'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " ------------------------------- End of vundle
 
 syntax on
+
 filetype plugin on
 set shell=/bin/bash
 
@@ -50,12 +57,18 @@ set mousemodel=popup " gives menu on right click in gvim
 
 " Display line numbers on the left
 set number
-" Display the cursor position on the last line of the screen or in the status
-" line of a window
 set ruler
 set wildmenu
 set showcmd
 set nostartofline
+set hidden
+" vim completion options
+set completeopt=longest,menuone
+
+" folding options
+set foldcolumn=1 " when bigger than 0 ads + at start of line which allows to fold
+set foldmethod=syntax " folding is syntax based
+set foldlevelstart=99 " stuff's not folded when opening files
 
 " Indentation Options "
 set autoindent
@@ -69,8 +82,12 @@ let g:indentLine_char='┆' "Will work only with UTF-8 file encodings
 " Wrapping options
 set nowrap
 
+" statusline options
+set laststatus=2 " status line is always on
+
 " Gui options
-set guioptions+=Tb
+set guioptions+=b " enables scrolling
+set guioptions-=T " disables toolbar, it's useless
 
 " Search Options
 set incsearch
@@ -81,14 +98,9 @@ set wrapscan " Makes searching cyclic
 " Keeps cursor in the middle of the screen
 set scrolloff=3
 
-" Coloring Option
-hi ColorColumn guibg=#2d2d2d ctermbg=246
-let &colorcolumn=join(range(81,999),",") " different color from 80 line
-let &colorcolumn="80,".join(range(120,999),",") " 
-
-" Enables to move around buffers in one project.
-nmap <F7> :n <CR> 
-nmap <F8> :prev <CR>
+" Coloring Optio
+" let &colorcolumn="80,".join(range(120,500),",")
+" highlight ColorColumn ctermbg=235 guibg=#2c2d27
 
 " Easier scrolling 
 nmap <C-Down> <C-e>
@@ -106,12 +118,16 @@ nmap <S-F9> :w <CR> :make! <CR> :botright cwindow <CR>
 nmap <silent><F10> :cclose <CR>
 nmap <silent><F11> :botright copen <CR>
 
-
 " Makes moving around windows easier
 map <silent> <A-Up> :wincmd k <CR>
 map <silent> <A-Down> :wincmd j <CR>
 map <silent> <A-Left> :wincmd h <CR>
 map <silent> <A-Right> :wincmd l <CR>
+
+" ConqueGdb options
+let g:ConqueGdb_SrcSplit = 'right'
+let g:ConqueGdb_Leader = '<F5>'
+let g:ConqueTerm_ReadUnfocused = 1
 
 " Syntastic
 set statusline+=%#warningmsg#
@@ -129,14 +145,20 @@ map <silent> <Leader>e :Errors<CR>
 map <Leader>s :SyntasticToggleMode<CR>
 
 " C++ Options
-let g:syntastic_cpp_checkers = ['clang_check']
-let g:syntastic_cpp_compiler_option = ' -std=c++11 -Wall -Wextra -Wpedantic -stdlib=libc++'
+" in order to make it work with c++11, one has to change 
+" file /syntastic/syntax_checkers/gcc
+let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_remove_include_errors = 1
 
-call SingleCompile#SetCompilerTemplate('cpp', 'g++', 'GNU G++ Compiler', 'g++', '$(FILE_NAME)$ -O2 -g --std=c++11 -Wall -Werror -Wpedantic -o $(FILE_TITLE)$', 'l:common_run_command')
+call SingleCompile#SetCompilerTemplate('cpp', 'g++', 'GNU G++ Compiler', 'g++', '$(FILE_NAME)$ -O2 -g --std=c++11 -Wall  -Wpedantic -o $(FILE_TITLE)$', 'l:common_run_command')
 call SingleCompile#SetOutfile('cpp', 'g++', 'l:common_out_file')
 call SingleCompile#ChooseCompiler('cpp', 'g++')
+
+au FileType cpp set matchpairs+=<:> " highlights < > brackets in c++
+
+" AirLine options
+let g:airline#extensions#tabline#enabled = 1
 
 " YouCompleteMe options
 let g:ycm_register_as_syntastic_checker = 0
@@ -156,8 +178,8 @@ let g:ycm_filetype_whitelist = { '*': 1 }
 let g:ycm_key_invoke_completion = '<C-Space>'
 
 " NERDTree settings
-
 map <silent> <Leader>t :NERDTreeToggle <CR>
+
 
 " Haskell settings
 let g:syntastic_haskell_checkers = ['hdevtools']
@@ -171,4 +193,3 @@ let g:hdevtools_options = g:syntastic_haskell_hdevtools_args
 au FileType haskell nnoremap <buffer> <F1> :HdevtoolsType<CR>
 au FileType haskell nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
 au FileType haskell nnoremap <buffer> <silent> <F3> :HdevtoolsInfo<CR>
-
