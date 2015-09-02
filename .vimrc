@@ -22,22 +22,32 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'L9'
 Plugin 'bling/vim-airline'
-" Plugin 'Valloric/YouCompleteMe'
 " git repos on your local machine (i.e. when working on your own plugin)
 " Plugin 'file:///home/gmarik/path/to/plugin'
-Plugin 'Syntastic'
+" Plugin 'Syntastic'
 Plugin 'bitc/vim-hdevtools'
 Plugin 'YouCompleteMe'
 Plugin 'terryma/vim-multiple-cursors'
 " Plugin 'nerdtree-ack'
-Plugin 'The-NERD-tree'
+Plugin 'scrooloose/nerdtree'
 Plugin 'xuhdev/SingleCompile'
 Bundle 'octol/vim-cpp-enhanced-highlight' 
 Plugin 'grep.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'Shougo/vimshell.vim'
 Plugin 'Shougo/vimproc.vim'
+Plugin 'unite.vim'
+Plugin 'Gundo'
+Plugin 'rdnetto/YCM-Generator'
+" Plugin 'eaglemt/ghcmod-vim'
+" Plugin 'eaglemt/neco-ghc'
+Plugin 'Haskell-Highlight-Enhanced'
 Plugin 'Conque-GDB'
+" Plugin 'Solarized'
+" Plugin 'AutoComplPop'
+" Plugin 'easytags.vim'
+Plugin 'xolox/vim-misc'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -62,11 +72,12 @@ set wildmenu
 set showcmd
 set nostartofline
 set hidden
+
 " vim completion options
-set completeopt=longest,menuone
+" set completeopt=longest,menuone
 
 " folding options
-set foldcolumn=1 " when bigger than 0 ads + at start of line which allows to fold
+" set foldcolumn=1 " when bigger than 0 ads + at start of line which allows to fold
 set foldmethod=syntax " folding is syntax based
 set foldlevelstart=99 " stuff's not folded when opening files
 
@@ -79,11 +90,15 @@ set softtabstop=0
 set smarttab
 let g:indentLine_char='┆' "Will work only with UTF-8 file encodings
 
+" .swp files options
+set backupdir=~/.vimswp
+set directory=~/.vimswp
+
 " Wrapping options
 set nowrap
 
 " statusline options
-set laststatus=2 " status line is always on
+set laststatus=1 " status line is always on
 
 " Gui options
 set guioptions+=b " enables scrolling
@@ -113,10 +128,10 @@ imap <c-s> <Esc>:w<CR>a
 " Compilation and make options
 " CAREFUL, F9 key mapping might not working with some compilers
 " Which don't support -O2 or -g options
-nmap <F9> :w <CR> :SCCompile <CR> :botright cwindow <CR>
-nmap <S-F9> :w <CR> :make! <CR> :botright cwindow <CR>
-nmap <silent><F10> :cclose <CR>
-nmap <silent><F11> :botright copen <CR>
+noremap <silent><F9> :w <CR> :SCCompile <CR> :botright cwindow <CR>
+noremap <silent><S-F9> :w <CR> :make! <CR> :botright cwindow <CR>
+noremap <silent><F10> :cclose <CR>
+noremap <silent><F11> :botright copen <CR>
 
 " Makes moving around windows easier
 map <silent> <A-Up> :wincmd k <CR>
@@ -124,9 +139,14 @@ map <silent> <A-Down> :wincmd j <CR>
 map <silent> <A-Left> :wincmd h <CR>
 map <silent> <A-Right> :wincmd l <CR>
 
+" Buffer moving options
+nmap <silent> Q :bdelete <CR>
+nmap <silent> gn :bnext <CR>
+nmap <silent> gN :bprev <CR>
+
 " ConqueGdb options
 let g:ConqueGdb_SrcSplit = 'right'
-let g:ConqueGdb_Leader = '<F5>'
+let g:ConqueGdb_Leader = '`'
 let g:ConqueTerm_ReadUnfocused = 1
 
 " Syntastic
@@ -160,8 +180,9 @@ au FileType cpp set matchpairs+=<:> " highlights < > brackets in c++
 " AirLine options
 let g:airline#extensions#tabline#enabled = 1
 
-" YouCompleteMe options
-let g:ycm_register_as_syntastic_checker = 0
+" YouCompleteMe option
+let g:ycm_semantic_triggers = {'haskell' : ['.']}
+let g:ycm_register_as_syntastic_checker = 1
 let g:ycm_enable_diagnostic_signs = 1
 let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_always_populate_location_list = 1 "default 0
