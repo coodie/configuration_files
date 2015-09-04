@@ -65,9 +65,9 @@ set shell=/bin/bash
 colorscheme molokai
 
 " Mouse options
+
 set mouse=a " mouse is usable in every mode
 set mousemodel=popup " gives menu on right click in gvim
-
 " Display line numbers on the left
 set number
 set ruler
@@ -115,6 +115,13 @@ set wrapscan " Makes searching cyclic
 
 " Keeps cursor in the middle of the screen
 set scrolloff=3
+
+" Nice mapping for moving block of lines up and down
+vnoremap <silent><C-A-down> :m '>+1<CR>gv
+vnoremap <silent><C-A-up> :m '<-2<CR>gv
+vnoremap <silent><C-A-j> :m '>+1<CR>gv
+vnoremap <silent><C-A-k> :m '<-2<CR>gv
+
 
 " Coloring Optio
 " let &colorcolumn="80,".join(range(120,500),",")
