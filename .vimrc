@@ -26,7 +26,7 @@ Plugin 'bling/vim-airline'
 " Plugin 'file:///home/gmarik/path/to/plugin'
 " Plugin 'Syntastic'
 Plugin 'bitc/vim-hdevtools'
-Plugin 'YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'terryma/vim-multiple-cursors'
 " Plugin 'nerdtree-ack'
 Plugin 'scrooloose/nerdtree'
@@ -47,6 +47,9 @@ Plugin 'Conque-GDB'
 " Plugin 'AutoComplPop'
 " Plugin 'easytags.vim'
 Plugin 'xolox/vim-misc'
+Plugin 'ctrlp.vim'
+Plugin 'Tagbar'
+Plugin 'cmake.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -74,7 +77,7 @@ set nostartofline
 set hidden
 
 " vim completion options
-" set completeopt=longest,menuone
+set completeopt=menuone
 
 " folding options
 " set foldcolumn=1 " when bigger than 0 ads + at start of line which allows to fold
@@ -114,10 +117,10 @@ set wrapscan " Makes searching cyclic
 set scrolloff=3
 
 " Nice mapping for moving block of lines up and down
-vnoremap <silent><S-A-down> :m '>+1<CR>gv
-vnoremap <silent><S-A-up> :m '<-2<CR>gv
-vnoremap <silent><S-A-j> :m '>+1<CR>gv
-vnoremap <silent><S-A-k> :m '<-2<CR>gv
+vnoremap <silent><C-A-down> :m '>+1<CR>gv
+vnoremap <silent><C-A-up> :m '<-2<CR>gv
+vnoremap <silent><C-A-j> :m '>+1<CR>gv
+vnoremap <silent><C-A-k> :m '<-2<CR>gv
 
 
 " Coloring Optio
@@ -152,7 +155,9 @@ nmap <silent> gn :bnext <CR>
 nmap <silent> gN :bprev <CR>
 
 " ConqueGdb options
-let g:ConqueGdb_SrcSplit = 'right'
+command -complete=file -nargs=* Gdb split|wincmd T|ConqueGdb <args>
+map `q :ConqueGdbCommand quit<CR>
+let g:ConqueGdb_SrcSplit = 'left'
 let g:ConqueGdb_Leader = '`'
 let g:ConqueTerm_ReadUnfocused = 1
 
@@ -170,6 +175,9 @@ let g:syntastic_check_on_open = 0
 
 map <silent> <Leader>e :Errors<CR>
 map <Leader>s :SyntasticToggleMode<CR>
+
+" Tagbar options
+map <silent> <Leader>g :TagbarToggle<CR>
 
 " C++ Options
 " in order to make it work with c++11, one has to change 
@@ -191,7 +199,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:ycm_semantic_triggers = {'haskell' : ['.']}
 let g:ycm_register_as_syntastic_checker = 1
 let g:ycm_enable_diagnostic_signs = 1
-let g:ycm_enable_diagnostic_highlighting = 0
+let g:ycm_enable_diagnostic_highlighting = 1
+let g:ycm_show_diagnostics_ui = 1
 let g:ycm_always_populate_location_list = 1 "default 0
 let g:ycm_open_loclist_on_ycm_diags = 1 "default 1
 let g:ycm_complete_in_strings = 1 "default 1
