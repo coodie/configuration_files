@@ -1,5 +1,5 @@
-" goovie .vimrc
-" Works with gtk-vim, version at least 7.4 (could be less but not checked) 
+
+
 
 
 " ------------------------------- Start of vundle
@@ -24,32 +24,39 @@ Plugin 'L9'
 Plugin 'bling/vim-airline'
 " git repos on your local machine (i.e. when working on your own plugin)
 " Plugin 'file:///home/gmarik/path/to/plugin'
-" Plugin 'Syntastic'
-Plugin 'bitc/vim-hdevtools'
+
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'terryma/vim-multiple-cursors'
-" Plugin 'nerdtree-ack'
 Plugin 'scrooloose/nerdtree'
 Plugin 'xuhdev/SingleCompile'
+Plugin 'cmake.vim'
 Bundle 'octol/vim-cpp-enhanced-highlight' 
 Plugin 'grep.vim'
 Plugin 'Yggdroot/indentLine'
-Plugin 'Shougo/vimshell.vim'
+" Plugin 'Shougo/vimshell.vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'unite.vim'
 Plugin 'Gundo'
 Plugin 'rdnetto/YCM-Generator'
-" Plugin 'eaglemt/ghcmod-vim'
-" Plugin 'eaglemt/neco-ghc'
-Plugin 'Haskell-Highlight-Enhanced'
 Plugin 'Conque-GDB'
-" Plugin 'Solarized'
-" Plugin 'AutoComplPop'
-" Plugin 'easytags.vim'
 Plugin 'xolox/vim-misc'
 Plugin 'ctrlp.vim'
 Plugin 'Tagbar'
-Plugin 'cmake.vim'
+Plugin 'davidhalter/jedi-vim'
+
+" Make some text tasks easier
+Plugin 'surround.vim'
+Plugin 'repeat.vim'
+
+" Haskell plugins
+Plugin 'dag/vim2hs'
+Plugin 'eagletmt/neco-ghc'
+Plugin 'eaglemt/ghcmod-vim'
+Plugin 'klen/python-mode'
+
+" Coq Plugins
+Plugin 'the-lambda-church/coquille'
+Plugin 'def-lkb/vimbufsync'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -99,6 +106,9 @@ set directory=~/.vimswp
 
 " Wrapping options
 set nowrap
+
+" compiled from source vim doesn't support backspace
+set backspace=indent,eol,start
 
 " statusline options
 set laststatus=1 " status line is always on
@@ -150,7 +160,6 @@ map <silent> <A-Left> :wincmd h <CR>
 map <silent> <A-Right> :wincmd l <CR>
 
 " Buffer moving options
-nmap <silent> Q :bdelete <CR>
 nmap <silent> gn :bnext <CR>
 nmap <silent> gN :bprev <CR>
 
@@ -195,6 +204,10 @@ au FileType cpp set matchpairs+=<:> " highlights < > brackets in c++
 " AirLine options
 let g:airline#extensions#tabline#enabled = 1
 
+" neco-ghc options
+let g:haskellmode_completion_ghc = 0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
 " YouCompleteMe option
 let g:ycm_semantic_triggers = {'haskell' : ['.']}
 let g:ycm_register_as_syntastic_checker = 1
@@ -209,14 +222,17 @@ let g:ycm_path_to_python_interpreter = '' "default ''
 let g:ycm_server_use_vim_stdout = 0 "default 0 (logging to console)
 let g:ycm_server_log_level = 'info' "default info
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'  "where to search for .ycm_extra_conf.py if not found
+" let g:ycm_extra_conf_vim_data = '~/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 1
 let g:ycm_goto_buffer_command = 'same-buffer' "[ 'same-buffer', 'horizontal-split', 'vertical-split', 'new-tab' ]
 let g:ycm_filetype_whitelist = { '*': 1 }
 let g:ycm_key_invoke_completion = '<C-Space>'
 
+au filetype cpp map <c-]> :YcmCompleter GoTo<CR>
+
 " NERDTree settings
 map <silent> <Leader>t :NERDTreeToggle <CR>
-
+let g:NERDTreeWinPos = "right"
 
 " Haskell settings
 let g:syntastic_haskell_checkers = ['hdevtools']
@@ -227,6 +243,52 @@ call SingleCompile#ChooseCompiler('haskell', 'ghc')
 let g:syntastic_haskell_hdevtools_args = '-g-fhelpful-errors'
 let g:hdevtools_options = g:syntastic_haskell_hdevtools_args
 
-au FileType haskell nnoremap <buffer> <F1> :HdevtoolsType<CR>
-au FileType haskell nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
-au FileType haskell nnoremap <buffer> <silent> <F3> :HdevtoolsInfo<CR>
+au FileType haskell nnoremap <buffer> <F1> :GhcModType <CR>
+au FileType haskell nnoremap <buffer> <silent> <F2> :GhcModTypeClear<CR>
+au FileType haskell nnoremap <buffer> <silent> <F3> :botright GhcModLint<CR>
+au FileType haskell nnoremap <buffer> <silent> <F4> :GhcModSplitFunCase<CR>
+au FileType haskell nnoremap <buffer> <silent> <F5> :GhcModSigCodegen<CR>
+
+" lushtags
+" copy pasted from https://github.com/bitc/lushtags/blob/master/plugin/tagbar-haskell.vim
+if executable('lushtags')
+    let g:tagbar_type_haskell = {
+        \ 'ctagsbin' : 'lushtags',
+        \ 'ctagsargs' : '--ignore-parse-error --',
+        \ 'kinds' : [
+            \ 'm:module:0',
+            \ 'e:exports:1',
+            \ 'i:imports:1',
+            \ 't:declarations:0',
+            \ 'd:declarations:1',
+            \ 'n:declarations:1',
+            \ 'f:functions:0',
+            \ 'c:constructors:0'
+        \ ],
+        \ 'sro' : '.',
+        \ 'kind2scope' : {
+            \ 'd' : 'data',
+            \ 'n' : 'newtype',
+            \ 'c' : 'constructor',
+            \ 't' : 'type'
+        \ },
+        \ 'scope2kind' : {
+            \ 'data' : 'd',
+            \ 'newtype' : 'n',
+            \ 'constructor' : 'c',
+            \ 'type' : 't'
+        \ }
+    \ }
+endif
+" end of copy paste
+
+" Pymode
+
+let g:pymode_rope = 0
+let g:pymode_python = 'python3'
+
+" Coquille
+let g:coquille_auto_move = 'true'
+
+" Maps Coquille commands to <F2> (Undo), <F3> (Next), <F4> (ToCursor)
+au FileType coq call coquille#FNMapping()
