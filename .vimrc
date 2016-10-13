@@ -38,7 +38,7 @@ Plugin 'Shougo/vimproc.vim'
 Plugin 'unite.vim'
 Plugin 'Gundo'
 Plugin 'rdnetto/YCM-Generator'
-Plugin 'Conque-GDB'
+" Plugin 'Conque-GDB'
 Plugin 'xolox/vim-misc'
 Plugin 'ctrlp.vim'
 Plugin 'Tagbar'
@@ -51,8 +51,11 @@ Plugin 'repeat.vim'
 " Haskell plugins
 Plugin 'dag/vim2hs'
 Plugin 'eagletmt/neco-ghc'
-Plugin 'eaglemt/ghcmod-vim'
+Plugin 'eagletmt/ghcmod-vim'
 Plugin 'klen/python-mode'
+
+" Latex Plugins
+Plugin 'LaTeX-Suite-aka-Vim-LaTeX'
 
 " Coq Plugins
 Plugin 'the-lambda-church/coquille'
@@ -101,8 +104,9 @@ set smarttab
 let g:indentLine_char='┆' "Will work only with UTF-8 file encodings
 
 " .swp files options
-set backupdir=~/.vimswp
-set directory=~/.vimswp
+set noswapfile
+" set backupdir=~/.vimswp
+" set directory=~/.vimswp
 
 " Wrapping options
 set nowrap
