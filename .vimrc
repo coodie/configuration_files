@@ -33,16 +33,16 @@ Plugin 'cmake.vim'
 Bundle 'octol/vim-cpp-enhanced-highlight' 
 Plugin 'grep.vim'
 Plugin 'Yggdroot/indentLine'
-" Plugin 'Shougo/vimshell.vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'unite.vim'
 Plugin 'Gundo'
-Plugin 'rdnetto/YCM-Generator'
-" Plugin 'Conque-GDB'
 Plugin 'xolox/vim-misc'
 Plugin 'ctrlp.vim'
 Plugin 'Tagbar'
 Plugin 'davidhalter/jedi-vim'
+
+" Easier cooperation with tmux
+Plugin 'christoomey/vim-tmux-navigator'
 
 " Make some text tasks easier
 Plugin 'surround.vim'
@@ -55,7 +55,6 @@ Plugin 'eagletmt/ghcmod-vim'
 Plugin 'klen/python-mode'
 
 " Latex Plugins
-Plugin 'LaTeX-Suite-aka-Vim-LaTeX'
 
 " Coq Plugins
 Plugin 'the-lambda-church/coquille'
@@ -72,6 +71,8 @@ filetype plugin on
 set shell=/bin/bash
 
 " Mostly for GVim
+" set background=dark
+
 colorscheme molokai
 
 " Mouse options
@@ -118,7 +119,10 @@ set backspace=indent,eol,start
 set laststatus=1 " status line is always on
 
 " Gui options
-set guioptions+=b " enables scrolling
+set guioptions-=M
+set guioptions-=m
+set guioptions-=L
+set guioptions-=R
 set guioptions-=T " disables toolbar, it's useless
 
 " Search Options
@@ -145,9 +149,13 @@ vnoremap <silent><C-A-k> :m '<-2<CR>gv
 nmap <C-Down> <C-e>
 nmap <C-Up> <C-y>
 
-" These don't really work unless terminal is executed with stty -ixon
-nmap <c-s> :w <CR>
-imap <c-s> <Esc>:w<CR>a
+" Tmux navigation
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <M-Left> :TmuxNavigateLeft<cr>
+nnoremap <silent> <M-Down> :TmuxNavigateDown<cr>
+nnoremap <silent> <M-Up> :TmuxNavigateUp<cr>
+nnoremap <silent> <M-Right> :TmuxNavigateRight<cr>
+nnoremap <silent> <M-w> :TmuxNavigatePrevious<cr>
 
 " Compilation and make options
 " CAREFUL, F9 key mapping might not working with some compilers
@@ -158,10 +166,10 @@ noremap <silent><F10> :cclose <CR>
 noremap <silent><F11> :botright copen <CR>
 
 " Makes moving around windows easier
-map <silent> <A-Up> :wincmd k <CR>
-map <silent> <A-Down> :wincmd j <CR>
-map <silent> <A-Left> :wincmd h <CR>
-map <silent> <A-Right> :wincmd l <CR>
+" map <silent> <A-Up> :wincmd k <CR>
+" map <silent> <A-Down> :wincmd j <CR>
+" map <silent> <A-Left> :wincmd h <CR>
+" map <silent> <A-Right> :wincmd l <CR>
 
 " Buffer moving options
 nmap <silent> gn :bnext <CR>
@@ -199,7 +207,7 @@ let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_remove_include_errors = 1
 
-call SingleCompile#SetCompilerTemplate('cpp', 'g++', 'GNU G++ Compiler', 'g++', '$(FILE_NAME)$ -O2 -g --std=c++11 -Wall  -Wpedantic -o $(FILE_TITLE)$', 'l:common_run_command')
+call SingleCompile#SetCompilerTemplate('cpp', 'g++', 'GNU G++ Compiler', 'g++', '$(FILE_NAME)$ -O2 -g --std=c++14 -Wall  -Wpedantic -o $(FILE_TITLE)$', 'l:common_run_command')
 call SingleCompile#SetOutfile('cpp', 'g++', 'l:common_out_file')
 call SingleCompile#ChooseCompiler('cpp', 'g++')
 
@@ -241,7 +249,6 @@ let g:NERDTreeWinPos = "right"
 " Haskell settings
 let g:syntastic_haskell_checkers = ['hdevtools']
 call SingleCompile#ChooseCompiler('haskell', 'ghc')
-"call SingleCompile#ChooseCompiler('haskell', 'ghc', 'Glasgow Haskell
 
 " vim-hdevtools
 let g:syntastic_haskell_hdevtools_args = '-g-fhelpful-errors'
