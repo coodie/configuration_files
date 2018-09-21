@@ -25,21 +25,21 @@ Plugin 'bling/vim-airline'
 " git repos on your local machine (i.e. when working on your own plugin)
 " Plugin 'file:///home/gmarik/path/to/plugin'
 
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'scrooloose/nerdtree'
 Plugin 'xuhdev/SingleCompile'
-Plugin 'cmake.vim'
+" Plugin 'cmake.vim'
 Bundle 'octol/vim-cpp-enhanced-highlight' 
 Plugin 'grep.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'Shougo/vimproc.vim'
-Plugin 'unite.vim'
+" Plugin 'unite.vim'
 Plugin 'Gundo'
 Plugin 'xolox/vim-misc'
 Plugin 'ctrlp.vim'
 Plugin 'Tagbar'
-Plugin 'davidhalter/jedi-vim'
+" Plugin 'davidhalter/jedi-vim'
 
 " Easier cooperation with tmux
 Plugin 'christoomey/vim-tmux-navigator'
@@ -49,16 +49,16 @@ Plugin 'surround.vim'
 Plugin 'repeat.vim'
 
 " Haskell plugins
-Plugin 'dag/vim2hs'
-Plugin 'eagletmt/neco-ghc'
-Plugin 'eagletmt/ghcmod-vim'
+" Plugin 'dag/vim2hs'
+" Plugin 'eagletmt/neco-ghc'
+" Plugin 'eagletmt/ghcmod-vim'
 Plugin 'klen/python-mode'
 
 " Latex Plugins
 
 " Coq Plugins
-Plugin 'the-lambda-church/coquille'
-Plugin 'def-lkb/vimbufsync'
+" Plugin 'the-lambda-church/coquille'
+" Plugin 'def-lkb/vimbufsync'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -140,11 +140,6 @@ vnoremap <silent><C-A-up> :m '<-2<CR>gv
 vnoremap <silent><C-A-j> :m '>+1<CR>gv
 vnoremap <silent><C-A-k> :m '<-2<CR>gv
 
-
-" Coloring Optio
-" let &colorcolumn="80,".join(range(120,500),",")
-" highlight ColorColumn ctermbg=235 guibg=#2c2d27
-
 " Easier scrolling 
 nmap <C-Down> <C-e>
 nmap <C-Up> <C-y>
@@ -164,12 +159,6 @@ noremap <silent><F9> :w <CR> :SCCompile <CR> :botright cwindow <CR>
 noremap <silent><S-F9> :w <CR> :make! <CR> :botright cwindow <CR>
 noremap <silent><F10> :cclose <CR>
 noremap <silent><F11> :botright copen <CR>
-
-" Makes moving around windows easier
-" map <silent> <A-Up> :wincmd k <CR>
-" map <silent> <A-Down> :wincmd j <CR>
-" map <silent> <A-Left> :wincmd h <CR>
-" map <silent> <A-Right> :wincmd l <CR>
 
 " Buffer moving options
 nmap <silent> gn :bnext <CR>
@@ -199,13 +188,6 @@ map <Leader>s :SyntasticToggleMode<CR>
 
 " Tagbar options
 map <silent> <Leader>g :TagbarToggle<CR>
-
-" C++ Options
-" in order to make it work with c++11, one has to change 
-" file /syntastic/syntax_checkers/gcc
-let g:syntastic_cpp_checkers = ['gcc']
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_remove_include_errors = 1
 
 call SingleCompile#SetCompilerTemplate('cpp', 'g++', 'GNU G++ Compiler', 'g++', '$(FILE_NAME)$ -O2 -g --std=c++14 -Wall  -Wpedantic -o $(FILE_TITLE)$', 'l:common_run_command')
 call SingleCompile#SetOutfile('cpp', 'g++', 'l:common_out_file')
